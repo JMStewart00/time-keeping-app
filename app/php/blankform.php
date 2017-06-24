@@ -1,6 +1,6 @@
 
 			<form action="" method="get" class="form-control mx-auto">
-
+			
 				<div class="row w-100 mx-auto">
 					<div class="form-group mx-auto col">
 						<div class="form-group-addon">Project/Task Name:</div>
@@ -27,6 +27,6 @@
 					</div>
 				</div>
 					<div class="row w-50 mx-auto">
-						<button class="btn btn-outline-warning btn-block col w-50 mx-auto" type="submit">Submit Changes</button>
+						<button class="btn btn-outline-primary btn-block col w-50 mx-auto" type="submit">Add Task</button>
 					</div>
 			</form>

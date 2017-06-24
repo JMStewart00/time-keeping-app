@@ -39,7 +39,7 @@
 								<?=$task['task_name'];?>
 							</td>
 							<td>
-								<?=$task['clock_in'];?>
+								<?=date('h:i a', strtotime($task['clock_in']));?>
 							</td>
 							<td>
 							<?php
@@ -52,7 +52,7 @@
                                     </button>
                                   </form>';
                                 } else {
-                                   echo $task['clock_out'];
+                                   echo date('h:i a', strtotime($task['clock_out']));;
                                 }
                         
                                 ?>
@@ -60,7 +60,7 @@
 						</tr>
 						<?php } ?>
 
-											</tbody>
+					</tbody>
 				</table>
 			</div>
 			

@@ -1,5 +1,7 @@
 
 
 $(document).ready(function() {
-    $('#taskTable').DataTable();
+    $('#taskTable').DataTable( {
+        "serverSide": true,
+    } );
 } );

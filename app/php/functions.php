@@ -11,13 +11,17 @@
 
 		if (empty($_GET['task_name'])) {
 			$status_message = "Please enter a task name.";
+			echo $status_message;
 
 		} else {
 			$task_name = htmlentities($_GET['task_name']);
 			$task_date = !empty($_GET['task_date']) ? htmlentities($_GET['task_date']) : $task_date;
 			$clock_in = !empty($_GET['clock_in']) ? htmlentities($_GET['clock_in']) : $clock_in;
 			$clock_out = !empty($_GET['clock_out']) ? htmlentities($_GET['clock_out']) : $clock_out;
-			addTask(getDB(), $task_name, $task_date, $clock_in, $clock_out);
+			if (isset($_GET['updating'])) {
+				$id = htmlentities($_GET['updating']);
+				updateEntry(getDB(), $id, $task_name, $task_date, $clock_in, $clock_out); 
+			} else addTask(getDB(), $task_name, $task_date, $clock_in, $clock_out);
 		}
 
 		if (isset($_GET['deleteEntry'])) {
@@ -30,9 +34,21 @@
 			stopClock(getDb(), $id);
 		}
 
+		if (isset($_GET['editEntry'])) {
+			$id = htmlentities($_GET['editEntry']);
+			$rowData = appendEntry(getDb(), $id);
+
+		}
+
+
 		function stopClock($db, $id) {
 			$time = date('H:i:s');
 			$stmt = "UPDATE timesheet SET clock_out = '$time' WHERE id = '$id';";
+			$result = pg_query($stmt);
+		}
+
+		function updateEntry($db, $id, $task, $date, $clockin, $clockout) {
+			$stmt = "UPDATE timesheet SET (task_name, task_date, clock_in, clock_out) = ('$task', '$date', '$clockin', '$clockout') WHERE id = '$id' ;";
 			$result = pg_query($stmt);
 		}
 		
@@ -52,7 +68,14 @@
 			return pg_fetch_all($request);
 		};
 
+		function appendEntry($db, $id) {
+			$stmt = "SELECT * FROM timesheet WHERE id = '$id';";
+			$result = pg_query($stmt);
+			return pg_fetch_all($result)[0];
 
+		}
+
+			
 
 
 		function addTask($db, $task, $date, $clockin, $clockout) {
