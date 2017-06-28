@@ -13,11 +13,6 @@
 			<output for="fader" id="volume">100</output>
 			<h1 class="text-center">Taskr</h1>
 			<?php include 'php/functions.php' ?>
-			<?php
-			if (isset($_GET['editEntry'])){
-				include 'php/filledform.php';
-				} else {include 'php/blankform.php';}
-			?>
 			
 			<?php include 'php/table.php' ?>
 			<?php include 'html/footer.html' ?>
