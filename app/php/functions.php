@@ -41,6 +41,50 @@
 		}
 
 
+		#### brayn7 additions#####
+			if (isset($_GET['submit'])){
+          $cleanGet = $_GET;
+        foreach ($cleanGet as $key => $value) {
+          $key = htmlentities($value);
+        }
+        switch ($cleanGet['submit']) {
+        case 'add_client': 
+          $cleanName = $cleanGet['client_name'];
+          addRowTo(getDB(), "clients" , array("name") , array($cleanName));
+          break;
+        case 'delete_client': 
+          $cleanId = $cleanGet['id'];
+          removeRow(getDB(), "clients", $cleanId);
+          break; 
+        case 'edit_client': 
+          $cleanId = $cleanGet['id'];
+          $cleanName = $cleanGet['client_name'];
+          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
+          break;   
+        }
+      }
+
+      function addRowTo($db, $table, $cols , $vals ) {
+       $cols = implode(",",$cols);
+       $vals = implode(",", $vals);
+       $stmt = "insert into $table ($cols) values ('$vals');";
+       $result = pg_query($stmt);
+     }
+
+     function removeRow ($db, $table, $id){
+        $stmt = "DELETE FROM $table WHERE id = '$id';";
+        $result = pg_query($stmt);
+      }
+
+      function editRow ($db, $table, $cols, $vals, $id){
+        $cols = implode(",",$cols);
+        $vals = implode(",", $vals);
+        $stmt = "UPDATE $table SET ($cols) = ('$vals') WHERE id = '$id' ;";
+        $result = pg_query($stmt);
+      }
+		#### brayn7 end-additions#####
+
+
 		function stopClock($db, $id) {
 			$time = date('H:i:s');
 			$stmt = "UPDATE tasks SET clock_out = '$time' WHERE id = '$id';";
