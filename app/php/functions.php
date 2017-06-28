@@ -43,12 +43,12 @@
 
 		function stopClock($db, $id) {
 			$time = date('H:i:s');
-			$stmt = "UPDATE timesheet SET clock_out = '$time' WHERE id = '$id';";
+			$stmt = "UPDATE tasks SET clock_out = '$time' WHERE id = '$id';";
 			$result = pg_query($stmt);
 		}
 
 		function updateEntry($db, $id, $task, $date, $clockin, $clockout) {
-			$stmt = "UPDATE timesheet SET (task_name, task_date, clock_in, clock_out) = ('$task', '$date', '$clockin', '$clockout') WHERE id = '$id' ;";
+			$stmt = "UPDATE tasks SET (task_name, task_date, clock_in, clock_out) = ('$task', '$date', '$clockin', '$clockout') WHERE id = '$id' ;";
 			$result = pg_query($stmt);
 		}
 		
@@ -64,12 +64,12 @@
 
 
 		function getTasks($db){
-			$request = pg_query($db, 'SELECT * FROM timesheet;');
+			$request = pg_query($db, 'SELECT * FROM tasks;');
 			return pg_fetch_all($request);
 		};
 
 		function appendEntry($db, $id) {
-			$stmt = "SELECT * FROM timesheet WHERE id = '$id';";
+			$stmt = "SELECT * FROM tasks WHERE id = '$id';";
 			$result = pg_query($stmt);
 			return pg_fetch_all($result)[0];
 
@@ -80,15 +80,15 @@
 
 		function addTask($db, $task, $date, $clockin, $clockout) {
 			if ($clockout) { 
-				$stmt = "INSERT INTO timesheet (task_name, task_date, clock_in, clock_out) VALUES ('$task', '$date', '$clockin', '$clockout');";
+				$stmt = "INSERT INTO tasks (task_name, task_date, clock_in, clock_out) VALUES ('$task', '$date', '$clockin', '$clockout');";
 			} else {
-				$stmt = "INSERT INTO timesheet (task_name, task_date, clock_in, clock_out) VALUES ('$task', '$date', '$clockin', NULL );";
+				$stmt = "INSERT INTO tasks (task_name, task_date, clock_in, clock_out) VALUES ('$task', '$date', '$clockin', NULL );";
 			}
 				$result = pg_query($stmt);
 		}
 
 		function deleteEntry($db, $entry_id) {
-			$stmt = "DELETE FROM timesheet WHERE id ='$entry_id';";
+			$stmt = "DELETE FROM tasks WHERE id ='$entry_id';";
 			$result = pg_query($stmt);
 
 		}
