@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
 html {
-	margin-bottom: 10%;
+	margin: 5% 0% 10% 0%;
 }
 
 div.container
@@ -56,3 +56,21 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
 h4 {
 	font-weight: bold;
 }
+
+.inputTopNav > span, .inputTopNav > input, .inputTopNav > button {
+	background-color: transparent; 
+	color: #EF767A;
+	border-radius: 0;
+
+}
+
+.inputTopNav > input:focus{
+	background-color: white;
+	opacity: .2;
+	border: none;
+}
+
+#selectClient > .btn-group {width:100%;}
+#selectClient > .btn-group .btn {width:90%;}
+#selectClient > .btn-group .btn.dropdown-toggle {width:10%;}
+#selectClient > .btn-group .dropdown-menu {width:100%;}
