@@ -60,7 +60,8 @@
           $cleanId = $cleanGet['id'];
           $cleanName = $cleanGet['client_name'];
           editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
-          break;   
+          break;
+
         }
       }
 
