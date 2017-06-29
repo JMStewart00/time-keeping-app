@@ -2,38 +2,37 @@
 				<table id="taskTable" class="table table-responsive table-striped" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-							<th width="1%"></th>
-							<th width="1%"></th>
+							<th></th>
+							<th></th>
 							<th>Date</th>
 							<th>Task Name</th>
-							<th>Start</th>
-							<th>End</th>
-							<th width="1%"></th>
+							<th>Time Worked</th>
+							<th>Rate</th>
 						</tr>
 					</thead>					
 
 					<?php foreach(getTasks(getDB()) as $task) { ?>
 					<tbody>
 						<tr>
-							<td width="1%">
+							<td>
 							<form action="GET">
-								<input type="hidden" name="editEntry" value="<?=$task["id"];?>">
-								<button type="submit" class="btn-warning btn btn-block btn-sm" aria-label="Remove">
+								<input type="hidden" name="id" value="<?=$task['id']?>">
+								<button class="btn-warning btn btn-block btn-sm"  name="submit" value="edit_task" type="submit">
 									<span aria-hidden="true">&#9998</span>
 							</form>
 							</td>
-							<td width="1%">
+							<td>
 								<form action="GET">
 									
 								</button>
-								<input type="hidden" name="deleteEntry" value="<?=$task["id"];?>">
-								<button type="submit" class="btn-danger btn btn-block btn-sm" aria-label="Remove">
+								<input type="hidden" name="id" value="<?=$task['id']?>">
+								<button class="btn-danger btn btn-block btn-sm" name="submit" value="delete_task" type="submit">
 									<span aria-hidden="true">X</span>
 								</button>
 								</form>
 							</td>
 							<td>
-								<?=$task['task_date'];?>
+								<?= $task['task_date'];?>
 							</td>
 							<td>
 								<?=$task['task_name'];?>
@@ -56,6 +55,9 @@
                                 }
                         
                                 ?>
+							</td>
+							<td>
+								$<?=$task['rate'];?>/hr
 							</td>
 						</tr>
 						<?php } ?>
