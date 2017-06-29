@@ -21,7 +21,7 @@
 					<label type="text" class="input-group-addon" aria-label="Text input with checkbox">Rate</label>
 					<label type="text" class="input-group-addon" aria-label="Text input with checkbox">$</label>
 					<label class="input-group-addon" for="fader"><output for="fader" id="volume">100</output></label>
-					<input class="ml-2" type="range" min="5" max="200" value="150" id="fader" step="5" name="rate" oninput="outputUpdate(value)">
+					<input class="ml-2" type="range" min="5" max="200" value="100" id="fader" step="5" name="rate" oninput="outputUpdate(value)">
 				</div>
 				<button class="btn  btn-outline-success" value="add_task" name="submit" type="submit"><i class="fa fa-play" aria-hidden="true"></i></button>
 			</div>

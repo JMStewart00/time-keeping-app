@@ -56,9 +56,8 @@
 						$cleanRate = $cleanGet['rate'];
 		      		$cleanTaskName = $cleanGet['task_name'];
 		      		$cleanClientId = $cleanGet['client_id'];
-		      		addRowTo(getDB(), "tasks", array("task_name, rate"), array($cleanTaskName. '\'','\''. $cleanRate));
-		      		addRowTo(getDB(), "invoices", array("client_id", "task_id"), array($cleanClientId . '\'','\'' . $nextTaskId));
-        			 }
+		      		addRowTo(getDB(), "tasks", array("task_name","rate", "client_id"), array($cleanTaskName. '\'','\''. $cleanRate . '\'','\''. $cleanClientId));
+		      	} // end else
 			      break;   
 		        }
 	} // submit $GET
