@@ -16,9 +16,9 @@
 			</div>
 			<div class="input-group col inputTopNav">
 				<span class="input-group-addon">$</span>
-				<input type="text" class="form-control" aria-label="Text input with checkbox">
+				<input type="text" class="form-control" aria-label="Text input with checkbox" name="rate">
 			</div>
-			<button class="btn  btn-outline-success" type="submit"><i class="fa fa-play" aria-hidden="true"></i></button>
+			<button class="btn  btn-outline-success" value="add_task" name="submit" type="submit"><i class="fa fa-play" aria-hidden="true"></i></button>
 		</div>
 	</nav>
 	</form>

@@ -9,60 +9,66 @@
 
 
 
-		if (empty($_GET['task_name'])) {
-			$status_message = "Please enter a task name.";
-			echo $status_message;
+		// if (empty($_GET['task_name'])) {
+		// 	$status_message = "Please enter a task name.";
+		// 	echo $status_message;
 
-		} else {
-			$task_name = htmlentities($_GET['task_name']);
-			$task_date = !empty($_GET['task_date']) ? htmlentities($_GET['task_date']) : $task_date;
-			$clock_in = !empty($_GET['clock_in']) ? htmlentities($_GET['clock_in']) : $clock_in;
-			$clock_out = !empty($_GET['clock_out']) ? htmlentities($_GET['clock_out']) : $clock_out;
-			if (isset($_GET['updating'])) {
-				$id = htmlentities($_GET['updating']);
-				updateEntry(getDB(), $id, $task_name, $task_date, $clock_in, $clock_out); 
-			} else addTask(getDB(), $task_name, $task_date, $clock_in, $clock_out);
-		}
+		// } else {
+		// 	$task_name = htmlentities($_GET['task_name']);
+		// 	// $task_date = !empty($_GET['task_date']) ? htmlentities($_GET['task_date']) : $task_date;
+		// 	// $clock_in = !empty($_GET['clock_in']) ? htmlentities($_GET['clock_in']) : $clock_in;
+		// 	// $clock_out = !empty($_GET['clock_out']) ? htmlentities($_GET['clock_out']) : $clock_out;
+		// 	if (isset($_GET['updating'])) {
+		// 		$id = htmlentities($_GET['updating']);
+		// 		updateEntry(getDB(), $id, $task_name, $task_date, $clock_in, $clock_out); 
+		// 	} else addTask(getDB(), $task_name, $task_date, $clock_in, $clock_out);
+		// }
 
-		if (isset($_GET['deleteEntry'])) {
-			$entry_id = htmlentities($_GET['deleteEntry']);
-			deleteEntry(getDB(), $entry_id);
-		}
+		// if (isset($_GET['deleteEntry'])) {
+		// 	$entry_id = htmlentities($_GET['deleteEntry']);
+		// 	deleteEntry(getDB(), $entry_id);
+		// }
 
-		if (isset($_GET['stopClock'])) {
-			$id = htmlentities($_GET['stopClock']);
-			stopClock(getDb(), $id);
-		}
+		// if (isset($_GET['stopClock'])) {
+		// 	$id = htmlentities($_GET['stopClock']);
+		// 	stopClock(getDb(), $id);
+		// }
 
-		if (isset($_GET['editEntry'])) {
-			$id = htmlentities($_GET['editEntry']);
-			$rowData = appendEntry(getDb(), $id);
+		// if (isset($_GET['editEntry'])) {
+		// 	$id = htmlentities($_GET['editEntry']);
+		// 	$rowData = appendEntry(getDb(), $id);
 
-		}
+		// }
+
 
 
 		#### brayn7 additions#####
-			if (isset($_GET['submit'])){
+		if (isset($_GET['submit'])){
           $cleanGet = $_GET;
-        foreach ($cleanGet as $key => $value) {
-          $key = htmlentities($value);
-        }
-        switch ($cleanGet['submit']) {
-        case 'add_client': 
-          $cleanName = $cleanGet['client_name'];
-          addRowTo(getDB(), "clients" , array("name") , array($cleanName));
-          break;
-        case 'delete_client': 
-          $cleanId = $cleanGet['id'];
-          removeRow(getDB(), "clients", $cleanId);
-          break; 
-        case 'edit_client': 
-          $cleanId = $cleanGet['id'];
-          $cleanName = $cleanGet['client_name'];
-          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
-          break;   
-        }
-      }
+	        foreach ($cleanGet as $key => $value) {
+	          $key = htmlentities($value);
+	        }
+	        switch ($cleanGet['submit']) {
+	        case 'add_client': 
+	          $cleanName = $cleanGet['client_name'];
+	          addRowTo(getDB(), "clients" , array("name") , array($cleanName));
+	          break;
+	        case 'delete_client': 
+	          $cleanId = $cleanGet['id'];
+	          removeRow(getDB(), "clients", $cleanId);
+	          break; 
+	        case 'edit_client': 
+	          $cleanId = $cleanGet['id'];
+	          $cleanName = $cleanGet['client_name'];
+	          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
+	          break;  
+	        case 'add_task': 
+				$cleanRate = $cleanGet['rate'];
+		        $cleanTaskName = $cleanGet['task_name'];
+		        addRowTo(getDB(), "tasks", array("task_name, rate"), array($cleanTaskName. '\'','\''. $cleanRate));
+		      break;   
+	        }
+	      }
 
       function addRowTo($db, $table, $cols , $vals ) {
        $cols = implode(",",$cols);
@@ -135,6 +141,11 @@
 			$stmt = "DELETE FROM tasks WHERE id ='$entry_id';";
 			$result = pg_query($stmt);
 
+		}
+
+		function getClients($db){
+			$rq = pg_query($db, "SELECT * FROM clients");
+			return pg_fetch_all($rq);
 		}
 
 		?>
