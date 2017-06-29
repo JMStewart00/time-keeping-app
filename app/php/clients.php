@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <link rel="stylesheet" href="../style.css">
-      <?php include '../html/cdn_links.html' ?> 
+      <?php include $_SERVER['DOCUMENT_ROOT'].'/app/html/cdn_links.html' ?> 
    </head>
 
 
-   <body>
-      <?php include 'functions.php'; ?>
+   <body id="clientsBody">
 
+      <?php 
+
+      include $_SERVER['DOCUMENT_ROOT'].'/app/php/functions.php'; 
+      include $_SERVER['DOCUMENT_ROOT'].'/app/php/alt_header.php'; 
+
+      ?>
       
       <div class="container-fluid">
          <div class="row">
@@ -41,6 +45,9 @@
          
       </div>
       
-      <?php include '../html/cdn_scripts.html' ?>
+      <?php 
+      include $_SERVER['DOCUMENT_ROOT'].'/app/html/footer.html';
+      include $_SERVER['DOCUMENT_ROOT'].'/app/html/cdn_scripts.html'; 
+      ?>
    </body>
 </html>
