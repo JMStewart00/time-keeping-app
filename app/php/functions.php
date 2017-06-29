@@ -17,7 +17,7 @@
 		$task_date = date("m/d/y");
 		$clock_in = date("H:i:s");
 		$clock_out = NULL;
-		$nextTaskId = pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"];
+		$nextTaskId = intval(pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"]);
 
 		#### brayn7 additions#####		
 		if (isset($_GET['submit'])){
