@@ -1,7 +1,7 @@
 		<?php
 
 		function getDB() {
-			$ENV = parse_ini_file('env.ini');
+			$ENV = parse_ini_file($_SERVER['DOCUMENT_ROOT'].'/env.ini');
 			return $db = pg_connect("
 				host=$ENV[HOST]
 				port=$ENV[PORT]
