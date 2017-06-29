@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,600,700");
+html {
+  margin: 5% 0% 10% 0%; }
+
+div.container {
+  font-family: Raleway;
+  margin: 0 auto;
+  padding: 1em 1em;
+  text-align: center; }
+
+div.container a {
+  color: white;
+  text-decoration: none;
+  font: 20px Raleway;
+  margin: auto;
+  padding: 5px 5px;
+  position: relative;
+  z-index: 0;
+  cursor: pointer; }
+
+div.borderXwidth a:before, div.borderXwidth a:after {
+  position: absolute;
+  opacity: 0;
+  width: 0%;
+  height: 2px;
+  content: '';
+  background: #FFF;
+  -webkit-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s; }
+
+div.borderXwidth a:before {
+  left: 0px;
+  top: 0px; }
+
+div.borderXwidth a:after {
+  right: 0px;
+  bottom: 0px; }
+
+div.borderXwidth a:hover:before, div.borderXwidth a:hover:after {
+  opacity: 1;
+  width: 100%; }
+
+h4 {
+  font-weight: bold; }
+
+.inputTopNav > span, .inputTopNav > input, .inputTopNav > button {
+  background-color: transparent;
+  color: #EF767A;
+  border-radius: 0; }
+
+.inputTopNav > input:focus {
+  background-color: white;
+  opacity: .2;
+  border: none; }
+
+#selectClient > .btn-group {
+  width: 100%; }
+
+#selectClient > .btn-group .btn {
+  width: 90%; }
+
+#selectClient > .btn-group .btn.dropdown-toggle {
+  width: 10%; }
+
+#selectClient > .btn-group .dropdown-menu {
+  width: 100%; }
+
+body {
+  font-family: 'Open Sans', sans-serif; }
+
+#showForm, #hideForm {
+  position: fixed;
+  left: 10px;
+  font-size: 1.75em; }
+
+.no-border {
+  border: none !important; }
+
+#stopBtn {
+  font-size: 1.1em;
+  padding: 3px 7px; }
+
+.table td {
+  vertical-align: middle; }
+
+#client_list {
+  -webkit-box-shadow: 0px 7px 12px 5px #f1f1f1;
+          box-shadow: 0px 7px 12px 5px #f1f1f1; }
+
+#add_clients button {
+  font-family: 'Open Sans';
+  font-weight: 100;
+  padding: 12px 50px;
+  border-radius: 0px; }
+
+#add_clients input, .client input {
+  font-family: 'Open Sans';
+  font-weight: 100;
+  border-radius: 0px;
+  border: 1px solid #f1f1f1 !important;
+  border-right: 0px; }
+
+.client input {
+  border: 0 !important; }
+
+#add_clients input:hover, #add_clients input:focus, .client input:hover, .client input:focus {
+  z-index: 0 !important;
+  border-color: #5cb85c !important;
+  outline: 0; }
+
+.client form:hover, .client form:focus {
+  -webkit-box-shadow: 0px 4px 3px #f1f1f1;
+          box-shadow: 0px 4px 3px #f1f1f1; }
+
+.client button {
+  border: none !important;
+  font-size: .8em;
+  font-weight: 100;
+  padding: 4px; }
+
+h5 {
+  font-family: 'Open Sans';
+  font-weight: 100; }

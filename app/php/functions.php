@@ -45,6 +45,7 @@
 		#### brayn7 additions#####
 		if (isset($_GET['submit'])){
           $cleanGet = $_GET;
+
 	        foreach ($cleanGet as $key => $value) {
 	          $key = htmlentities($value);
 	        }
@@ -69,6 +70,7 @@
 		      break;   
 	        }
 	      }
+
 
       function addRowTo($db, $table, $cols , $vals ) {
        $cols = implode(",",$cols);
