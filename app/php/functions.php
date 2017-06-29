@@ -1,12 +1,25 @@
 		<?php
+
+		
+
+		function getDB() {
+			$ENV = parse_ini_file("env.ini");
+			return $db = pg_connect("
+				host= $ENV[HOST]
+				port= $ENV[PORT]
+				dbname= $ENV[DBNAME]
+				user= $ENV[USER]
+				password= $ENV[PASSWORD]
+			");
+		};
+
 		date_default_timezone_set('America/Kentucky/Louisville');
 		$status_message = '';
 		$task_name = '';
 		$task_date = date("m/d/y");
 		$clock_in = date("H:i:s");
 		$clock_out = NULL;
-
-
+		$nextTaskId = pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"];
 
 
 		// if (empty($_GET['task_name'])) {
@@ -65,9 +78,11 @@
 	          break;  
 	        case 'add_task': 
 				$cleanRate = $cleanGet['rate'];
-		        $cleanTaskName = $cleanGet['task_name'];
-		        addRowTo(getDB(), "tasks", array("task_name, rate"), array($cleanTaskName. '\'','\''. $cleanRate));
-		      break;   
+		      $cleanTaskName = $cleanGet['task_name'];
+		      $cleanClientId = $cleanGet['client_id'];
+		      addRowTo(getDB(), "tasks", array("task_name, rate"), array($cleanTaskName. '\'','\''. $cleanRate));
+		      addRowTo(getDB(), "invoices", array("client_id", "task_id"), array($cleanClientId . '\'','\'' . $nextTaskId));
+		      break;    
 	        }
 	      }
 
@@ -104,15 +119,7 @@
 			$result = pg_query($stmt);
 		}
 		
-		function getDB() {
-			return $db = pg_connect('
-				host=localhost
-				port=5432
-				dbname=timesheet
-				user=josh
-				password=newpassword
-				');
-		};
+
 
 
 		function getTasks($db){
@@ -126,9 +133,6 @@
 			return pg_fetch_all($result)[0];
 
 		}
-
-			
-
 
 		function addTask($db, $task, $date, $clockin, $clockout) {
 			if ($clockout) { 
