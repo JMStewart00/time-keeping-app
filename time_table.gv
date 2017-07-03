@@ -1,0 +1,265 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: client_tasks; Type: TABLE; Schema: public; Owner: brayn7
+--
+
+CREATE TABLE client_tasks (
+    id integer NOT NULL,
+    client_id integer,
+    task_id integer
+);
+
+
+ALTER TABLE client_tasks OWNER TO brayn7;
+
+--
+-- Name: client_tasks_id_seq; Type: SEQUENCE; Schema: public; Owner: brayn7
+--
+
+CREATE SEQUENCE client_tasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE client_tasks_id_seq OWNER TO brayn7;
+
+--
+-- Name: client_tasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: brayn7
+--
+
+ALTER SEQUENCE client_tasks_id_seq OWNED BY client_tasks.id;
+
+
+--
+-- Name: clients; Type: TABLE; Schema: public; Owner: brayn7
+--
+
+CREATE TABLE clients (
+    id integer NOT NULL,
+    name character varying(75) NOT NULL,
+    create_date timestamp without time zone DEFAULT now(),
+    last_update timestamp without time zone DEFAULT now()
+);
+
+
+ALTER TABLE clients OWNER TO brayn7;
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE; Schema: public; Owner: brayn7
+--
+
+CREATE SEQUENCE clients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE clients_id_seq OWNER TO brayn7;
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: brayn7
+--
+
+ALTER SEQUENCE clients_id_seq OWNED BY clients.id;
+
+
+--
+-- Name: tasks; Type: TABLE; Schema: public; Owner: brayn7
+--
+
+CREATE TABLE tasks (
+    id integer NOT NULL,
+    task_name character varying(50) NOT NULL,
+    task_date date DEFAULT ('now'::text)::date NOT NULL,
+    comment character varying(300),
+    last_update timestamp without time zone DEFAULT now(),
+    rate integer NOT NULL,
+    clock_in timestamp without time zone DEFAULT now(),
+    clock_out timestamp without time zone
+);
+
+
+ALTER TABLE tasks OWNER TO brayn7;
+
+--
+-- Name: times_id_seq; Type: SEQUENCE; Schema: public; Owner: brayn7
+--
+
+CREATE SEQUENCE times_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE times_id_seq OWNER TO brayn7;
+
+--
+-- Name: times_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: brayn7
+--
+
+ALTER SEQUENCE times_id_seq OWNED BY tasks.id;
+
+
+--
+-- Name: client_tasks id; Type: DEFAULT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY client_tasks ALTER COLUMN id SET DEFAULT nextval('client_tasks_id_seq'::regclass);
+
+
+--
+-- Name: clients id; Type: DEFAULT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY clients ALTER COLUMN id SET DEFAULT nextval('clients_id_seq'::regclass);
+
+
+--
+-- Name: tasks id; Type: DEFAULT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('times_id_seq'::regclass);
+
+
+--
+-- Data for Name: client_tasks; Type: TABLE DATA; Schema: public; Owner: brayn7
+--
+
+COPY client_tasks (id, client_id, task_id) FROM stdin;
+36	50	350
+\.
+
+
+--
+-- Name: client_tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: brayn7
+--
+
+SELECT pg_catalog.setval('client_tasks_id_seq', 36, true);
+
+
+--
+-- Data for Name: clients; Type: TABLE DATA; Schema: public; Owner: brayn7
+--
+
+COPY clients (id, name, create_date, last_update) FROM stdin;
+50	awesome ince	2017-07-03 09:20:34.724237	2017-07-03 09:20:34.724237
+\.
+
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE SET; Schema: public; Owner: brayn7
+--
+
+SELECT pg_catalog.setval('clients_id_seq', 50, true);
+
+
+--
+-- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: brayn7
+--
+
+COPY tasks (id, task_name, task_date, comment, last_update, rate, clock_in, clock_out) FROM stdin;
+350	test	2017-07-03	\N	2017-07-03 12:23:05.624657	101	2017-07-03 12:23:05.624657	2017-07-03 12:28:52
+\.
+
+
+--
+-- Name: times_id_seq; Type: SEQUENCE SET; Schema: public; Owner: brayn7
+--
+
+SELECT pg_catalog.setval('times_id_seq', 350, true);
+
+
+--
+-- Name: client_tasks client_tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY client_tasks
+    ADD CONSTRAINT client_tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: clients clients_name_key; Type: CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY clients
+    ADD CONSTRAINT clients_name_key UNIQUE (name);
+
+
+--
+-- Name: clients clients_pkey; Type: CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY clients
+    ADD CONSTRAINT clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasks times_pkey; Type: CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY tasks
+    ADD CONSTRAINT times_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: client_tasks client_tasks_client_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY client_tasks
+    ADD CONSTRAINT client_tasks_client_id_fkey FOREIGN KEY (client_id) REFERENCES clients(id);
+
+
+--
+-- Name: client_tasks client_tasks_task_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: brayn7
+--
+
+ALTER TABLE ONLY client_tasks
+    ADD CONSTRAINT client_tasks_task_id_fkey FOREIGN KEY (task_id) REFERENCES tasks(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
