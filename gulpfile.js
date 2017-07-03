@@ -25,9 +25,7 @@ gulp.task('compileBootstrap', function() {
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer(autoprefixerOptions))
     .pipe(gulp.dest('app/css/'))
-    .on('change', function () {
-    browserSync.reload();
-  });
+    .pipe(bs.stream());
 });   
 
 gulp.task('sass', function () {
@@ -35,7 +33,8 @@ gulp.task('sass', function () {
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer( autoprefixerOptions))
     .pipe(concat('main.css'))
-    .pipe(gulp.dest('./app/css/'));
+    .pipe(gulp.dest('./app/css/'))
+    .pipe(bs.stream());
 });
 
 gulp.task('connect-sync', function() {

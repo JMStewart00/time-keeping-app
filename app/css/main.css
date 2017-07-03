@@ -1,7 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,600,700");
 html {
-  margin: 5% 0% 10% 0%; }
+  margin: 15% 0% 10% 0%;
+
+   }
 
 div.container {
   font-family: Raleway;

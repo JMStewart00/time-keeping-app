@@ -17,7 +17,6 @@
 		$task_date = date("m/d/y");
 		$clock_in = date("H:i:s");
 		$clock_out = NULL;
-		$nextTaskId = intval(pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"]);
 
 		#### brayn7 additions#####		
 		if (isset($_GET['submit'])){
@@ -48,6 +47,13 @@
 		          $cleanName = $cleanGet['task_name'];
 		          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
 		          break;  
+		        case 'stop_time': 
+		        		$cleanId = $cleanGet['task_id'];
+		        		$cleanRate = $cleanGet['rate'];
+		        		$cleanTaskName = $cleanGet['task_name'];
+		        		$timedate = date('m/d/y') . " " . date('H:i:s');
+		        		editRow(getDB(), "tasks", array('task_name', 'rate', "clock_out"), array($cleanTaskName. '\'','\''. $cleanRate. '\'','\''. $timedate), $cleanId);
+		          break;   
 		        case 'add_task': 
 		        	if (empty($_GET['task_name'])) {
 			  			$status_message = "Please enter a task name.";
@@ -56,7 +62,11 @@
 						$cleanRate = $cleanGet['rate'];
 		      		$cleanTaskName = $cleanGet['task_name'];
 		      		$cleanClientId = $cleanGet['client_id'];
-		      		addRowTo(getDB(), "tasks", array("task_name","rate", "client_id"), array($cleanTaskName. '\'','\''. $cleanRate . '\'','\''. $cleanClientId));
+		      		addRowTo(getDB(), "tasks", array("task_name","rate"), array($cleanTaskName. '\'','\''. $cleanRate));
+
+		      		$nextTaskId = intval(pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"]);
+
+		      		addRowTo(getDB(), "client_tasks", array("client_id","task_id"), array($cleanClientId . '\'', '\'' . $nextTaskId));
 		      	} // end else
 			      break;   
 		        }
