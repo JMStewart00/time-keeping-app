@@ -4,6 +4,7 @@
 	$taskNameVal = (count($currTask[0]) === 0) ? "" : $currTask[0]['task_name'];
 	$taskRateVal = (count($currTask[0]) === 0) ? 100 : $currTask[0]['rate'];
 	$submitName = (count($currTask[0]) === 0) ? "add_task" : "stop_time";
+	$btnClass = (count($currTask[0]) === 0) ? "btn-outline-success" : "btn-outline-danger";
  ?>
 <nav class="text-center navbar fixed-top d-block bg-inverse">
 	<form action="GET">
@@ -31,7 +32,14 @@
 					<label class="input-group-addon" for="fader"><output for="fader" id="volume"><?= $taskRateVal; ?></output></label>
 					<input class="ml-2" type="range" min="5" max="200" value="<?= $taskRateVal; ?>" id="fader" step="5" name="rate" oninput="outputUpdate(value)">
 				</div>
-				<button id="startBtn" class="btn  btn-outline-success" value="<?= $submitName; ?>" name="submit" type="submit"><i class="fa fa-play" aria-hidden="true"></i></button>
+				<button class="btn <?= $btnClass; ?>" value="<?= $submitName; ?>" name="submit" type="submit">
+				<?php if (count($currTask[0]) !== 0) {?>
+					<i class="fa fa-stop-circle-o" aria-hidden="true"></i>
+				<?php } else { ?>
+					<i class="fa fa-play" aria-hidden="true"></i>
+				<?php } ?>
+				
+				</button>
 			</div>
 			</div>
 		</form>
