@@ -53,6 +53,8 @@
 		        		$cleanTaskName = $cleanGet['task_name'];
 		        		$timedate = date('m/d/y') . " " . date('H:i:s');
 		        		editRow(getDB(), "tasks", array('task_name', 'rate', "clock_out"), array($cleanTaskName. '\'','\''. $cleanRate. '\'','\''. $timedate), $cleanId);
+		        		header('Location:' . $_SERVER['PHP_SELF']);
+        				die;
 		          break;   
 		        case 'add_task': 
 		        	if (empty($_GET['task_name'])) {
@@ -67,6 +69,8 @@
 		      		$nextTaskId = intval(pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"]);
 
 		      		addRowTo(getDB(), "client_tasks", array("client_id","task_id"), array($cleanClientId . '\'', '\'' . $nextTaskId));
+		      		header('Location:' . $_SERVER['PHP_SELF']);
+        				die;
 		      	} // end else
 			      break;   
 		        }
@@ -105,7 +109,7 @@
 		}
 		
 		function getTasks($db){
-			$request = pg_query($db, 'SELECT * FROM tasks;');
+			$request = pg_query($db, 'SELECT * FROM tasks where clock_out IS NOT NULL;');
 			return pg_fetch_all($request);
 		};
 
