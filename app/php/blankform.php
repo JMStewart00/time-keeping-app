@@ -6,7 +6,7 @@
 						<div class="form-group-addon">Project/Task Name:</div>
 						<label for="task_name" class="sr-only"></label>
 						<input type="text" class="form-control" name="task_name" id="task_name" placeholder="Place task here...">
-					</div>
+<!-- 					</div>
 					<div class="form-group mx-auto col">
 						<label for="task_date" class="sr-only"></label>
 						<div class="form-group-addon">Date of Task:</div>
@@ -25,7 +25,7 @@
 						<label for="clock_out" class="sr-only"></label>
 						<input type="time" class="form-control" name="clock_out" id="clock_out" placeholder="00:00">
 					</div>
-				</div>
+				</div> -->
 					<div class="row w-50 mx-auto">
 						<button class="btn btn-outline-primary btn-block col w-50 mx-auto" type="submit">Add Task</button>
 					</div>

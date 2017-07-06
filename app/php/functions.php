@@ -1,4 +1,16 @@
 		<?php
+
+		function getDB() {
+			$ENV = parse_ini_file($_SERVER['DOCUMENT_ROOT'].'/env.ini');
+			return $db = pg_connect("
+				host=$ENV[HOST]
+				port=$ENV[PORT]
+				dbname=$ENV[DBNAME]
+				user=$ENV[UN]
+				password=$ENV[PW]
+				");
+		};
+
 		date_default_timezone_set('America/Kentucky/Louisville');
 		$status_message = '';
 		$task_name = '';
@@ -6,39 +18,83 @@
 		$clock_in = date("H:i:s");
 		$clock_out = NULL;
 
+		#### brayn7 additions#####		
+		if (isset($_GET['submit'])){
+	        $cleanGet = $_GET;
+		        foreach ($cleanGet as $key => $value) {
+		          $key = htmlentities($value);
+		        }
+		        switch ($cleanGet['submit']) {
+		        case 'add_client': 
+		          $cleanName = $cleanGet['client_name'];
+		          addRowTo(getDB(), "clients" , array("name") , array($cleanName));
+		          break;
+		        case 'delete_client': 
+		          $cleanId = $cleanGet['id'];
+		          removeRow(getDB(), "clients", $cleanId);
+		          break; 
+		        case 'delete_task': 
+		          $cleanTaskId = $cleanGet['id'];
+		          removeRow(getDB(), "tasks", $cleanTaskId);
+		          break; 
+		        case 'edit_client': 
+		          $cleanId = $cleanGet['id'];
+		          $cleanName = $cleanGet['client_name'];
+		          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
+		          break; 
+		        case 'edit_task': 
+		          $cleanId = $cleanGet['id'];
+		          $cleanName = $cleanGet['task_name'];
+		          editRow(getDB(), "clients", array("name"), array($cleanName), $cleanId);
+		          break;  
+		        case 'stop_time': 
+		        		$cleanId = $cleanGet['task_id'];
+		        		$cleanRate = $cleanGet['rate'];
+		        		$cleanTaskName = $cleanGet['task_name'];
+		        		$timedate = date('m/d/y') . " " . date('H:i:s');
+		        		editRow(getDB(), "tasks", array('task_name', 'rate', "clock_out"), array($cleanTaskName. '\'','\''. $cleanRate. '\'','\''. $timedate), $cleanId);
+		        		header('Location:' . $_SERVER['PHP_SELF']);
+        				die;
+		          break;   
+		        case 'add_task': 
+		        	if (empty($_GET['task_name'])) {
+			  			$status_message = "Please enter a task name.";
+			  			echo $status_message;
+	          		} else { 
+						$cleanRate = $cleanGet['rate'];
+		      		$cleanTaskName = $cleanGet['task_name'];
+		      		$cleanClientId = $cleanGet['client_id'];
+		      		addRowTo(getDB(), "tasks", array("task_name","rate"), array($cleanTaskName. '\'','\''. $cleanRate));
 
+		      		$nextTaskId = intval(pg_fetch_all(pg_query(getDB(),"SELECT id FROM tasks ORDER BY id DESC LIMIT 1;"))[0]["id"]);
 
+		      		addRowTo(getDB(), "client_tasks", array("client_id","task_id"), array($cleanClientId . '\'', '\'' . $nextTaskId));
+		      		header('Location:' . $_SERVER['PHP_SELF']);
+        				die;
+		      	} // end else
+			      break;   
+		        }
+	} // submit $GET
 
-		if (empty($_GET['task_name'])) {
-			$status_message = "Please enter a task name.";
-			echo $status_message;
+      function addRowTo($db, $table, $cols , $vals ) {
+       $cols = implode(",",$cols);
+       $vals = implode(",", $vals);
+       $stmt = "insert into $table ($cols) values ('$vals');";
+       $result = pg_query($stmt);
+     }
 
-		} else {
-			$task_name = htmlentities($_GET['task_name']);
-			$task_date = !empty($_GET['task_date']) ? htmlentities($_GET['task_date']) : $task_date;
-			$clock_in = !empty($_GET['clock_in']) ? htmlentities($_GET['clock_in']) : $clock_in;
-			$clock_out = !empty($_GET['clock_out']) ? htmlentities($_GET['clock_out']) : $clock_out;
-			if (isset($_GET['updating'])) {
-				$id = htmlentities($_GET['updating']);
-				updateEntry(getDB(), $id, $task_name, $task_date, $clock_in, $clock_out); 
-			} else addTask(getDB(), $task_name, $task_date, $clock_in, $clock_out);
-		}
+     function removeRow ($db, $table, $id){
+        $stmt = "DELETE FROM $table WHERE id = '$id';";
+        $result = pg_query($stmt);
+      }
 
-		if (isset($_GET['deleteEntry'])) {
-			$entry_id = htmlentities($_GET['deleteEntry']);
-			deleteEntry(getDB(), $entry_id);
-		}
-
-		if (isset($_GET['stopClock'])) {
-			$id = htmlentities($_GET['stopClock']);
-			stopClock(getDb(), $id);
-		}
-
-		if (isset($_GET['editEntry'])) {
-			$id = htmlentities($_GET['editEntry']);
-			$rowData = appendEntry(getDb(), $id);
-
-		}
+      function editRow ($db, $table, $cols, $vals, $id){
+        $cols = implode(",",$cols);
+        $vals = implode(",", $vals);
+        $stmt = "UPDATE $table SET ($cols) = ('$vals') WHERE id = '$id' ;";
+        $result = pg_query($stmt);
+      }
+		#### brayn7 end-additions#####
 
 
 		function stopClock($db, $id) {
@@ -52,19 +108,8 @@
 			$result = pg_query($stmt);
 		}
 		
-		function getDB() {
-			return $db = pg_connect('
-				host=localhost
-				port=5432
-				dbname=timesheet
-				user=josh
-				password=newpassword
-				');
-		};
-
-
 		function getTasks($db){
-			$request = pg_query($db, 'SELECT * FROM tasks;');
+			$request = pg_query($db, 'SELECT * FROM tasks where clock_out IS NOT NULL;');
 			return pg_fetch_all($request);
 		};
 
@@ -74,9 +119,6 @@
 			return pg_fetch_all($result)[0];
 
 		}
-
-			
-
 
 		function addTask($db, $task, $date, $clockin, $clockout) {
 			if ($clockout) { 
@@ -91,6 +133,11 @@
 			$stmt = "DELETE FROM tasks WHERE id ='$entry_id';";
 			$result = pg_query($stmt);
 
+		}
+
+		function getClients($db){
+			$rq = pg_query($db, "SELECT * FROM clients");
+			return pg_fetch_all($rq);
 		}
 
 		?>
